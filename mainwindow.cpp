@@ -21,14 +21,22 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(onActionOpenTriggered()));
     connect(ui->actionFind_Rect, SIGNAL(triggered()), this, SLOT(onActionFindRectTriggered()));
     //
-    m_pLabelImage = new QLabel;
+    m_pSplitter = new QSplitter(this);
+    //
+    m_pLabelImage = new QLabel;    
     m_pLabelImage->setAlignment(Qt::AlignCenter);
     //
-    m_pAreaImage = new QScrollArea;
+    m_pAreaImage = new QScrollArea(m_pSplitter);
     m_pAreaImage->setBackgroundRole(QPalette::Dark);
     m_pAreaImage->setWidget(m_pLabelImage);
     m_pAreaImage->setWidgetResizable(true);
-    setCentralWidget(m_pAreaImage);
+    //
+    m_pLabelPatternImage = new QLabel(m_pSplitter);
+    m_pLabelPatternImage->setAlignment(Qt::AlignCenter);
+    m_pLabelPatternImage->setBackgroundRole(QPalette::Shadow);
+    //
+    setCentralWidget(m_pSplitter);
+    m_pSplitter->show();
     //
     m_pLabelFileName = new QLabel;
     m_pLabelImageSize = new QLabel("9999 x 9999");
@@ -55,6 +63,7 @@ MainWindow::~MainWindow()
     delete m_pAreaImage;
     delete m_pLabelFileName;
     delete m_pLabelImageSize;
+    delete m_pSplitter;
     delete m_pThreadWork;
 }
 
@@ -82,7 +91,18 @@ void MainWindow::onActionFindRectTriggered()
     if(!m_pLabelImage->pixmap())
         QMessageBox::warning(this,tr("Warning"),tr("No image to process"));
     else
-        m_pThreadWork->startImageMatching(m_pLabelImage->pixmap()->toImage());
+    {
+        QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),
+                                                        ":/image",
+                                                        tr("Images (*.png *.jpg)"));
+        if (!fileName.isEmpty())
+            loadFile(fileName,true);
+        if(!m_pLabelPatternImage->pixmap())
+            QMessageBox::warning(this,tr("Warning"),tr("No pattern image is loaded"));
+        else
+            m_pThreadWork->startImageMatching(m_pLabelImage->pixmap()->toImage(),
+                                              m_pLabelPatternImage->pixmap()->toImage());
+    }
 }
 
 void MainWindow::onThreadStarted()
@@ -106,7 +126,7 @@ void MainWindow::onThreadFinished()
     statusBar()->showMessage("Fragment found",2000);
 }
 
-void MainWindow::loadFile(const QString &rcFileName)
+void MainWindow::loadFile(const QString &rcFileName, bool isPattern)
 {
     QPixmap pixmap;
     QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -115,11 +135,16 @@ void MainWindow::loadFile(const QString &rcFileName)
     //
     if(cbSuccess)
     {
-        m_pLabelImage->setPixmap(pixmap);
-        m_sizeImage = pixmap.rect().size();
-        m_fileName = rcFileName;        
-        setWindowTitle(strippedName(rcFileName));
-        updateStatusBar();
+        if(!isPattern)
+        {
+            m_pLabelImage->setPixmap(pixmap);
+            m_sizeImage = pixmap.rect().size();
+            m_fileName = rcFileName;
+            setWindowTitle(strippedName(rcFileName));
+            updateStatusBar();
+        }
+        else
+            m_pLabelPatternImage->setPixmap(pixmap);
         statusBar()->showMessage(tr("File loaded"), 2000);
     }
 }

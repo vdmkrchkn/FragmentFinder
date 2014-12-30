@@ -10,12 +10,12 @@ class WorkerThread : public QThread
 public:    
     const QImage *getResultImage() const;
     //    
-    void startImageMatching(const QImage &rcImage);
+    void startImageMatching(const QImage &rcImageInput, const QImage &rcImagePattern);
     void stop();
 signals:
     void canceled();
 private:            
-    QScopedPointer<QImage> m_ptrInput, m_ptrResult;
+    QScopedPointer<QImage> m_ptrInput, m_ptrPattern, m_ptrResult;
     //
     virtual void run();
 };

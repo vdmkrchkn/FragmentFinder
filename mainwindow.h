@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSplitter>
 #include <QLabel>
 #include <QScrollArea>
 #include <worker-thread.h>
@@ -29,7 +30,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     // компоненты для отображения
-    QLabel *m_pLabelImage; // метка-канва для изображения
+    QSplitter *m_pSplitter;
+    QLabel *m_pLabelImage; // метка для исходного изображения
+    QLabel *m_pLabelPatternImage; // метка для исходного изображения
     QLabel *m_pLabelFileName;
     QLabel *m_pLabelImageSize;
     QScrollArea *m_pAreaImage;
@@ -37,9 +40,9 @@ private:
     QString m_fileName;
     QSize m_sizeImage;
     //
-    WorkerThread *m_pThreadWork;    
+    WorkerThread *m_pThreadWork;        
     //
-    void loadFile(const QString &rcFileName);
+    void loadFile(const QString &rcFileName, bool isPattern = false);
     //
     void updateStatusBar();
 };
