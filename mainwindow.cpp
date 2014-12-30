@@ -45,8 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //
     m_pThreadWork = new WorkerThread;
     connect(m_pThreadWork, SIGNAL(started()), this, SLOT(onThreadStarted()));
-    connect(m_pThreadWork, SIGNAL(finished()),this, SLOT(onThreadFinished()));
-    connect(m_pThreadWork, SIGNAL(canceled()),this, SLOT(onThreadCanceled()));
+    connect(m_pThreadWork, SIGNAL(finished()),this, SLOT(onThreadFinished()));    
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +55,7 @@ MainWindow::~MainWindow()
     delete m_pAreaImage;
     delete m_pLabelFileName;
     delete m_pLabelImageSize;
+    delete m_pThreadWork;
 }
 
 void MainWindow::closeEvent(QCloseEvent *pEvent)
@@ -90,9 +90,7 @@ void MainWindow::onThreadStarted()
     ui->menuBar->setEnabled(false);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     //
-    Sleep(5000);
-    //
-    m_bCanceled = false;
+    Sleep(2000);
 }
 
 void MainWindow::onThreadFinished()
@@ -105,12 +103,7 @@ void MainWindow::onThreadFinished()
     if (pcImage)    
         m_pLabelImage->setPixmap(QPixmap::fromImage(*pcImage));    
     //
-    statusBar()->showMessage((m_bCanceled ? "Canceled" : "Finished"),2000);
-}
-
-void MainWindow::onThreadCanceled()
-{
-    m_bCanceled = true;
+    statusBar()->showMessage("Fragment found",2000);
 }
 
 void MainWindow::loadFile(const QString &rcFileName)

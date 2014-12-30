@@ -25,9 +25,7 @@ private slots:
     // реакция на запуск потока
     void onThreadStarted();
     // реакция на завершение потока
-    void onThreadFinished();
-    // реакция на остановку потока
-    void onThreadCanceled();
+    void onThreadFinished();    
 private:
     Ui::MainWindow *ui;
     // компоненты для отображения
@@ -39,9 +37,7 @@ private:
     QString m_fileName;
     QSize m_sizeImage;
     //
-    WorkerThread *m_pThreadWork;
-    // нужно ли прерывать поток
-    bool m_bCanceled;
+    WorkerThread *m_pThreadWork;    
     //
     void loadFile(const QString &rcFileName);
     //

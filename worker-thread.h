@@ -7,23 +7,14 @@
 class WorkerThread : public QThread
 {
     Q_OBJECT
-public:
-    //
+public:    
     const QImage *getResultImage() const;
-    //
-    void startLoadFile(const QString &rcFilePath);
+    //    
     void startImageMatching(const QImage &rcImage);
     void stop();
 signals:
     void canceled();
-private:
-    enum Operation
-    {
-        LoadFile,
-        MatchImage
-    };
-    Operation m_nOperation;
-    QString m_FilePath;
+private:            
     QScopedPointer<QImage> m_ptrInput, m_ptrResult;
     //
     virtual void run();
