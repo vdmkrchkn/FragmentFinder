@@ -65,10 +65,10 @@
   </action>
   <action name="actionFind_Rect">
    <property name="text">
-    <string>Find &amp;Rect</string>
+    <string>Find F&amp;ragment</string>
    </property>
    <property name="toolTip">
-    <string>Find rectangle object on current image</string>
+    <string>Find fragment on current image</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
