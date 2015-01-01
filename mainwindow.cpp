@@ -123,7 +123,7 @@ void MainWindow::onThreadFinished()
     if (pcImage)    
         m_pLabelImage->setPixmap(QPixmap::fromImage(*pcImage));    
     //
-    statusBar()->showMessage("Fragment found",2000);
+    statusBar()->showMessage(tr("Fragment found"),2000);
 }
 
 void MainWindow::loadFile(const QString &rcFileName, bool isPattern)
