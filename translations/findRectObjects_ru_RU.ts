@@ -92,9 +92,27 @@
         <translation>Не загружен шаблон изображения</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="126"/>
+        <source>Fragment found</source>
+        <translation>Фрагмент найден</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="148"/>
         <source>File loaded</source>
         <translation>Файл загружен</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../main.cpp" line="28"/>
+        <source>Translation</source>
+        <translation>Перевод</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="28"/>
+        <source>Not loaded</source>
+        <translation>Не загружен</translation>
     </message>
 </context>
 </TS>
