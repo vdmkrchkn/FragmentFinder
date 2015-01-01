@@ -29,13 +29,19 @@ private slots:
     void onThreadFinished();    
 private:
     Ui::MainWindow *ui;
-    // компоненты для отображения
+    // разделитель исходное/шаблон изображение
     QSplitter *m_pSplitter;
-    QLabel *m_pLabelImage; // метка для исходного изображения
-    QLabel *m_pLabelPatternImage; // метка для исходного изображения
+    // метка для исходного изображения
+    QLabel *m_pLabelImage;
+    // метка для шаблонного изображения
+    QLabel *m_pLabelPatternImage;
     QLabel *m_pLabelFileName;
     QLabel *m_pLabelImageSize;
     QScrollArea *m_pAreaImage;
+    // исходное изображение
+    QImage m_pImage;
+    // фрагмент изображения
+    QImage m_pPatternImage;
     //
     QString m_fileName;
     QSize m_sizeImage;

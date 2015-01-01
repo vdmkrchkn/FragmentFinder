@@ -88,7 +88,7 @@ void MainWindow::onActionOpenTriggered()
 
 void MainWindow::onActionFindRectTriggered()
 {
-    if(!m_pLabelImage->pixmap())
+    if(m_pImage.isNull())
         QMessageBox::warning(this,tr("Warning"),tr("No image to process"));
     else
     {
@@ -97,11 +97,10 @@ void MainWindow::onActionFindRectTriggered()
                                                         tr("Images (*.png *.jpg)"));
         if (!fileName.isEmpty())
             loadFile(fileName,true);
-        if(!m_pLabelPatternImage->pixmap())
+        if(m_pPatternImage.isNull())
             QMessageBox::warning(this,tr("Warning"),tr("No pattern image is loaded"));
         else
-            m_pThreadWork->startImageMatching(m_pLabelImage->pixmap()->toImage(),
-                                              m_pLabelPatternImage->pixmap()->toImage());
+            m_pThreadWork->startImageMatching(m_pImage, m_pPatternImage);
     }
 }
 
@@ -138,13 +137,17 @@ void MainWindow::loadFile(const QString &rcFileName, bool isPattern)
         if(!isPattern)
         {
             m_pLabelImage->setPixmap(pixmap);
+            m_pImage = pixmap.toImage();
             m_sizeImage = pixmap.rect().size();
             m_fileName = rcFileName;
             setWindowTitle(strippedName(rcFileName));
             updateStatusBar();
         }
         else
+        {
             m_pLabelPatternImage->setPixmap(pixmap);
+            m_pPatternImage = pixmap.toImage();
+        }
         statusBar()->showMessage(tr("File loaded"), 2000);
     }
 }
