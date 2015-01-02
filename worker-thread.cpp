@@ -59,6 +59,8 @@ void WorkerThread::run()
         int result_cols = image.cols - templ.cols + 1;
         result.create(result_rows, result_cols, CV_32FC1);
         // matches
+        // CV_TM_CCORR - bad, but CV_TM_CCORR_NORMED - good
+        // CV_TM_CCOEFF - bad for the smallest fragments
         int match_method = CV_TM_SQDIFF;
         matchTemplate(image,templ,result,match_method);
         // normalize
