@@ -42,6 +42,10 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open">
+   <property name="icon">
+    <iconset resource="findRectObjects.qrc">
+     <normaloff>:/menu/resources/open.png</normaloff>:/menu/resources/open.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Open</string>
    </property>
@@ -76,7 +80,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="findRectObjects.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionE_xit</sender>

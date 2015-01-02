@@ -10,25 +10,21 @@ set(
 	CPP_FILES
 	main.cpp	
 	mainwindow.cpp
-	worker-thread.cpp
-	)
+	worker-thread.cpp)
 set(
 	H_FILES
 	mainwindow.h
-	worker-thread.h	
-	)
+	worker-thread.h)
 set(
 	TS_FILES
-	translations/findRectObjects_ru_RU.ts
-	)	
+	translations/findRectObjects_ru_RU.ts)	
 set(UI_FILES mainwindow.ui)
 # Translations
 list(
 	APPEND TRANSLATE_FILES
 	${CPP_FILES}
 	${H_FILES}
-	${UI_FILES}
-	)	
+	${UI_FILES})	
 #	
 option(UPDATE_TRANSLATIONS_WITH_DANGER
 	"Update source translation (files translations/*.ts). "
@@ -50,15 +46,13 @@ endif()
 #
 add_custom_target(translations DEPENDS ${QM_FILES})
 #
-qt5_wrap_cpp(
-  MOC_WRAPPERS
-  ${H_FILES}
-  )
-
-qt5_wrap_ui(
-  UIC_WRAPPERS
-  ${UI_FILES}
-  )
+qt5_wrap_cpp(MOC_WRAPPERS ${H_FILES})
+qt5_wrap_ui(UIC_WRAPPERS ${UI_FILES})
+#  
+qt5_add_resources(
+	QRC_WRAPPERS
+	findRectObjects.qrc
+	OPTIONS -no-compress)  
 #
 if(WIN32)
   set(gui_type WIN32)
@@ -69,8 +63,10 @@ add_executable(
   ${H_FILES}
   ${CPP_FILES}
   ${MOC_WRAPPERS}
-  ${UIC_WRAPPERS})
+  ${UIC_WRAPPERS}
+  ${QRC_WRAPPERS})
 #
+add_dependencies(findRectObjects translations)
 target_link_libraries(findRectObjects Qt5::Widgets ${OpenCV_LIBS})
 # Installation
 install(TARGETS findRectObjects RUNTIME DESTINATION bin)
