@@ -1,15 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QtWidgets>
+#include <time.h>
 
-namespace
-{
-    QString strippedName(const QString &rcFullFileName)
-    {
-        return QFileInfo(rcFullFileName).fileName();
-    }
-}
+#include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -104,25 +98,30 @@ void MainWindow::onActionFindRectTriggered()
     }
 }
 
+clock_t beginTime;
+
 void MainWindow::onThreadStarted()
 {
     ui->menuBar->setEnabled(false);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     //
+    beginTime = clock();    
     Sleep(2000);
 }
 
 void MainWindow::onThreadFinished()
 {
-    ui->menuBar->setEnabled(true);
+    double endTime = static_cast<double>(clock()-beginTime);
     //
+    ui->menuBar->setEnabled(true);    
     QApplication::restoreOverrideCursor();
     //
     const QImage *pcImage = m_pThreadWork->getResultImage();
     if (pcImage)    
         m_pLabelImage->setPixmap(QPixmap::fromImage(*pcImage));    
     //
-    statusBar()->showMessage(tr("Fragment found"),2000);
+    statusBar()->showMessage(tr("Fragment found, %1 sec.")
+                             .arg(endTime / CLOCKS_PER_SEC),2000);
 }
 
 void MainWindow::loadFile(const QString &rcFileName, bool isPattern)
@@ -139,8 +138,7 @@ void MainWindow::loadFile(const QString &rcFileName, bool isPattern)
             m_pLabelImage->setPixmap(pixmap);
             m_pImage = pixmap.toImage();
             m_sizeImage = pixmap.rect().size();
-            m_fileName = rcFileName;
-            setWindowTitle(strippedName(rcFileName));
+            m_fileName = rcFileName;            
             updateStatusBar();
         }
         else
